@@ -441,6 +441,34 @@ Object()也是一个工厂这一事实可能没有太多实际用处，仅仅是
 	};
 	
 <a name="a12"></a>
+
+ 
+ 
+// 装饰模式 的具体实现思路
+Sale.prototype.decorate = function (decorator) {
+    var F = function () {},
+        overrides = this.constructor.decorators[decorator], // 装饰器方法
+        i, newobj; 
+    F.prototype = this; // 原型指向sale 基类实例
+    newobj = new F();    // 原型继承 
+    newobj.uber = F.prototype; // uebr 执行sale 基类实例
+    for (i in overrides) {
+        if (overrides.hasOwnProperty(i)) {   // decorators 对象上的非原型方法 也就是getprice 
+            newobj[i] = overrides[i]; // 使用 decorators 覆盖原型上的 getprice 方法
+        }
+    }
+    return newobj;
+}; 
+
+
+
+
+
+
+
+
+
+
 ### 使用列表实现
 
 我们来看另一个明显不同的实现方法，受益于JavaScript的动态特性，它完全不需要使用继承。同时，我们也可以简单地将前一个方面的结果作为参数传给下一个方法，而不需要每一个方法都去调用前一个方法。
